@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "780691614678",
+    "project_id": "sastakhana-4e124",
+    "storage_bucket": "sastakhana-4e124.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780691614678:android:6f80a98775ac97bffe1277",
+        "android_client_info": {
+          "package_name": "com.sastakhana.sastakhana"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4r6nZriZQ9m0W8vqChRxzA71IuQFh18s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
