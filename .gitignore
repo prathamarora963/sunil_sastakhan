@@ -1,0 +1,68 @@
+gitignore
+# Miscellaneous
+*.class
+*.lock
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# IntelliJ related
+.idea/
+
+# VS Code related
+.vscode/
+
+# Android related
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/key.properties
+
+# iOS/macOS related
+**/ios/Pods/
+**/ios/Runner.xcworkspace
+**/ios/.symlinks/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Flutter/pod_helper.rb
+**/ios/Flutter/app_framework_info.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/ios/Runner/Info.plist
+**/ios/Runner/Assets.xcassets
+**/ios/Runner.xcodeproj/project.xcworkspace/
+**/ios/Runner.xcodeproj/xcshareddata/
+**/ios/Runner.xcodeproj/xcuserdata/
+
+# Build and distribution artifacts
+/dist/
+/release/
+
+# Sensitive information - It's a good practice to add any files
+# containing sensitive keys or credentials here.
+# For example, if you have a file with API keys:
+# secrets.json
+# .env
+
+# Firebase options (if you want to keep them local, though often they are committed)
+# uncomment the line below if you want to ignore your firebase_options.dart
+# lib/firebase_options.dart
