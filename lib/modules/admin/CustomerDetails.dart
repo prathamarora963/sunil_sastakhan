@@ -10,7 +10,7 @@ import '../../utils/color.dart';
 import '../../utils/colornotifire.dart';
 
 class CustomerDetails extends StatefulWidget {
-  const CustomerDetails({Key? key, this.user}) : super(key: key);
+  const CustomerDetails({Key? key,  this.user}) : super(key: key);
 
   final ManageUserModel? user;
 

@@ -93,7 +93,7 @@ class AdminApiProvider {
 
       return DataResponse.fromJson(
         response,
-        (data) => MerchantDetailsModel.fromJson(data),
+        (data) => MerchantDetailsModel.fromJson(data['data']),
       );
     } catch (e) {
       final res = (e as dynamic).response;

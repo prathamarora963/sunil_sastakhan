@@ -219,7 +219,7 @@ class _OrdersListState extends State<OrdersList>
   /// ================= ORDER LIST =================
   Widget _ordersList({required bool isActive}) {
     final orderData=_controller.orders;
-    if(orderData.isEmpty){
+    if(orderData!=null&&orderData.isEmpty){
       return Center(
         child: Text(
           "No orders found.",

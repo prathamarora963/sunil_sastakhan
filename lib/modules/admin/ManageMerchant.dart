@@ -1,5 +1,6 @@
 import 'package:SastaKhana/controller/admin/manage_merchant_controller.dart';
 import 'package:SastaKhana/data/models/admin_models/manage_merchant_model.dart';
+import 'package:SastaKhana/data/models/admin_models/manage_user_model.dart';
 import 'package:SastaKhana/utils/extensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -281,10 +282,19 @@ class _ManageMerchantState extends State<ManageMerchant>
           children: [
             InkWell(
               onTap: () {
-                CustomerDetails().launch(
+                CustomerDetails(
+                   user: ManageUserModel(
+                    id: merchantModel.id,
+                    fName: merchantModel.contactPerson,
+                    image: merchantModel.image,
+                    email: merchantModel.email,
+                    mobile: merchantModel.mobile,
+                  ),
+                ).launch(
                   context,
                   isNewTask: false,
                   pageRouteAnimation: PageRouteAnimation.Scale,
+                  
                 );
               },
               child: Row(
