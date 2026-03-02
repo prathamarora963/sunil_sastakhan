@@ -19,7 +19,7 @@ class ListResponse<TModel> {
     List<TModel> modelBody =
     jsonBody.map((e) => fromJsonTModel(e)).toList();
     return ListResponse<TModel>(
-      success: json['success'] as bool?,
+      success: json['success']?? json['status'] as bool?,
       //status: json['status'] as bool?,
       code: json['code'] as int?,
       message: json['message'] as String?,

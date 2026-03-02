@@ -13,7 +13,7 @@ class AdminAuthController extends GetxController
   }
 
   @override
-  void onSuccessFile(String file, String fileType) {
+  void onSuccessFile(String file, String fileType,{ImageType? imageType}) {
     imagePath.value = file;
   }
 }

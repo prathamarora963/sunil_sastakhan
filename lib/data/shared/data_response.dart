@@ -4,16 +4,18 @@ class DataResponse<TModel> {
   String? message;
   TModel? body;
   int? code;
+  String? token;
 
-  DataResponse({this.success, this.message, this.body, this.code});
+  DataResponse({this.success, this.message, this.body, this.code,this.token});
 
   factory DataResponse.fromJson(Map<String, dynamic> json, TModel Function(dynamic json) fromJsonT) {
     return DataResponse<TModel>(
-      success: json['success'] as bool?,
+      success: json['success'] ?? json['status'] as bool,
       //status: json['status'] as int?,
       message: json['message'] as String?,
-      body: fromJsonT(json['body']),
+      body: fromJsonT(json),
       code: json['code'] as int?,
+      token: json['token'] as String?,
     );
   }
 
@@ -24,6 +26,7 @@ class DataResponse<TModel> {
     data['message'] = message;
     data['body'] = toJsonT(body);
     data['code'] = code;
+    data['token'] = token;
     return data;
   }
 }

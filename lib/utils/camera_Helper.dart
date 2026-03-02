@@ -11,8 +11,10 @@ import 'package:permission_handler/permission_handler.dart';
 import 'app_utils.dart';
 import 'color.dart' as AppColor;
 
+enum ImageType { logo, shopImages,fssaiDoc,panCardDoc,merchantDoc,otherDoc }
+
 abstract class CameraOnCompleteListener {
-  void onSuccessFile(String file, String fileType);
+  void onSuccessFile(String file, String fileType,{ImageType? imageType});
   // void onSuccessVideo(String selectedUrl, Uint8List? thumbnail);
 }
 
@@ -28,7 +30,7 @@ class CameraHelper {
     this.cropAspectRatioPreset = cropAspectRatioPreset;
   }
 
-  void openAttachmentDialog() async {
+  void openAttachmentDialog({ImageType? imageType}) async {
     if (await isStorageEnabled()) {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -46,7 +48,7 @@ class CameraHelper {
       if (result != null) {
         File file = File(result.files.single.path!);
         debugPrint(file.path);
-        callback.onSuccessFile(file.path, "document");
+        callback.onSuccessFile(file.path, "document",imageType: imageType);
       } else {
         // user canceled the picker
       }
@@ -211,7 +213,7 @@ class CameraHelper {
   //   }
   // }
 
-  void openImagePicker() {
+  void openImagePicker({ImageType? imageType=.logo}) {
     showModalBottomSheet(
       context: context,
       useRootNavigator: false,
@@ -267,7 +269,7 @@ class CameraHelper {
                         Navigator.pop(context);
                         cropAspectRatioPreset != null
                             ? getImageWithCropping(ImageSource.camera)
-                            : getImageWithoutCropping(ImageSource.camera);
+                            : getImageWithoutCropping(ImageSource.camera,imageType:imageType);
                       }
                     },
                   ),
@@ -305,7 +307,7 @@ class CameraHelper {
                         Navigator.pop(context);
                         cropAspectRatioPreset != null
                             ? getImageWithCropping(ImageSource.gallery)
-                            : getImageWithoutCropping(ImageSource.gallery);
+                            : getImageWithoutCropping(ImageSource.gallery,imageType:imageType);
                       }
                     },
                   ),
@@ -585,10 +587,19 @@ class CameraHelper {
     }
   }
 
-  Future getImageWithoutCropping(ImageSource imageSource) async {
+  Future getImageWithoutCropping(ImageSource imageSource,{ImageType? imageType}) async {
+    if(imageType==.shopImages){
+      List<XFile>? imageFiles = await picker.pickMultiImage();
+      if (imageFiles.isNotEmpty) {
+        for (XFile imageFile in imageFiles) {
+          callback.onSuccessFile(imageFile.path, "image",imageType:imageType);
+        }
+      }
+      return;
+    }
     XFile? imageFile = await picker.pickImage(source: imageSource);
     if (imageFile != null) {
-      callback.onSuccessFile(imageFile.path, "image");
+      callback.onSuccessFile(imageFile.path, "image",imageType:imageType);
     } else {
       if (kDebugMode) {
         print('No image selected.');

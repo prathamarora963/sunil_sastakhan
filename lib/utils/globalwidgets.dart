@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:SastaKhana/data/models/scanner_detial.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -18,14 +19,13 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../AdminBottombar.dart';
-import '../MerchentBottombar.dart';
+import '../modules/admin/AdminBottombar.dart';
+import '../modules/merchent/MerchentBottombar.dart';
 import '../Global/GlobalConstants.dart';
-import '../UserBottombar.dart';
+import '../modules/user/UserBottombar.dart';
 import '../loginsignup/login.dart';
 import '../main.dart';
-import '../merchent/MarchentNotification.dart';
-import '../model/scanner_detial.dart';
+import '../modules/merchent/MarchentNotification.dart';
 import 'CropAspectRatioPresetCustom.dart';
 import 'botton.dart';
 import 'cached_network_image.dart';

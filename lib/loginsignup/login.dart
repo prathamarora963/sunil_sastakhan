@@ -50,26 +50,26 @@ class _LoginState extends State<Login> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    // SizedBox(height: 40.sp),
-                    Container(
-                      margin: EdgeInsets.only(
-                        top: 30.sp,
-                        bottom: 0,
-                        left: 0.sp,
-                        right: 0.sp,
-                      ),
-                      alignment: Alignment.topLeft,
-                      child: IconButton(
-                        onPressed: () {
-                          finish(context);
-                        },
-                        icon: Icon(
-                          Icons.arrow_back_ios_new_outlined,
-                          color: white,
-                          size: 4.h,
-                        ),
-                      ),
-                    ),
+                     SizedBox(height: 40.sp),
+                    // Container(
+                    //   margin: EdgeInsets.only(
+                    //     top: 30.sp,
+                    //     bottom: 0,
+                    //     left: 0.sp,
+                    //     right: 0.sp,
+                    //   ),
+                    //   alignment: Alignment.topLeft,
+                    //   child: IconButton(
+                    //     onPressed: () {
+                    //       finish(context);
+                    //     },
+                    //     icon: Icon(
+                    //       Icons.arrow_back_ios_new_outlined,
+                    //       color: white,
+                    //       size: 4.h,
+                    //     ),
+                    //   ),
+                    // ),
                     Center(child: Image.asset("images/logo.png", height: 30.h)),
 
                     SizedBox(height: 0.sp),

@@ -54,10 +54,11 @@ class BaseClient {
   Options? getHeaderToken() {
     String? token = DbHelper().getUserToken();
     Map<String, dynamic> headers = {
-      // 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibG9naW5UaW1lIjoxNzM3NjIzMDYyLCJpc1ZlcmlmeSI6MSwiaWF0IjoxNzM3NjIzMDYyLCJleHAiOjE3NjkxNTkwNjJ9.rE14J6jOUIn3wYA8SWANngC7b0TfoEWrnTS4l5nZnwk',
-      "secret_key": "mobile_secret_fiji_#123@321#",
-      "publish_key": "mobile_publish_fiji_#123@321#",
-      "language_type": DbHelper().getLanguage() != "eng" ? "2" : "1",
+      //  'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3RcL3Nhc3Rha2hhbmFcLyIsImF1ZCI6Imh0dHA6XC9cL2xvY2FsaG9zdFwvc2FzdGFraGFuYVwvIiwiaWF0IjoxNzY1NzE2NDM1LCJleHAiOjE3OTcyNTI0MzUsImRhdGEiOnsiaWQiOiIyIiwibmFtZSI6IlZpamF5IiwicGhvbmUiOiI5ODc4OTg3Njc4IiwiZW1haWwiOiJ2aWpheUBnbWFpbC5jb20iLCJhZ2VudCI6IjMifX0.w0z6DpoK-yyZrvmXGdJDHR3ia3njXwbusP0Kdya-hpI',
+      'Authorization':'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3RcL3Nhc3Rha2hhbmFcLyIsImF1ZCI6Imh0dHA6XC9cL2xvY2FsaG9zdFwvc2FzdGFraGFuYVwvIiwiaWF0IjoxNzY2MjIwNDM3LCJleHAiOjE3OTc3NTY0MzcsImRhdGEiOnsiaWQiOiIzMSIsIm5hbWUiOiJBbmtpdCBLdW1hciIsInBob25lIjoiODg5NjkwODY2NiIsImVtYWlsIjoiYmtAZ21haWwuY29tIiwiYWdlbnQiOiIxIn19.imO1al5u2ufTNk3svmT_higI_-ECV02YHA8uJnYU2Rc',
+      // "secret_key": "mobile_secret_fiji_#123@321#",
+      // "publish_key": "mobile_publish_fiji_#123@321#",
+      // "language_type": DbHelper().getLanguage() != "eng" ? "2" : "1",
     };
     if (token != null) {
       if (kDebugMode) {
@@ -86,7 +87,7 @@ class BaseClient {
       case RequestType.post:
         var response = await _dio.post(
           apiRequest.url,
-          data: FormData.fromMap(apiRequest.body ?? {}),
+          data: apiRequest.body != null ? FormData.fromMap(apiRequest.body!) : null,
           options: getHeaderToken(),
         );
         return response.data;
@@ -94,7 +95,7 @@ class BaseClient {
       case RequestType.raw:
         var response = await _dio.post(
           apiRequest.url,
-          data: apiRequest.body ?? {},
+          data: apiRequest.body,
           options: getHeaderToken(),
         );
         return response.data;
@@ -134,29 +135,31 @@ class BaseClient {
 
   Future<dynamic> handleMultipartRequest(
     ApiRequest apiRequest,
-    String imageFile,
+    // String imageFile,
   ) async {
     bool isOnline = await hasNetwork();
     if (!isOnline) {
       Utils.showErrorDialog('No Internet, Please try later !');
-      Get.to(
-        () => NoInternetPage(
-          callBack: (apiRequest) {
-            handleMultipartRequest(apiRequest, imageFile);
-          },
-          apiRequest: apiRequest,
-        ),
-      );
+      // Get.to(
+      //   () => NoInternetPage(
+      //     callBack: (apiRequest) {
+      //       handleMultipartRequest(apiRequest, imageFile);
+      //     },
+      //     apiRequest: apiRequest,
+      //   ),
+      // );
 
       return;
     }
-    FormData data = FormData.fromMap({
-      "image": await MultipartFile.fromFile(imageFile),
-    });
-
+    // FormData data = FormData.fromMap({
+    //   "image": await MultipartFile.fromFile(imageFile),
+    // });
+    final FormData formData = await MultipartParser.parse(
+      apiRequest.body ?? {},
+    );
     var res = await _dio.post(
       apiRequest.url,
-      data: data,
+      data: formData,
       options: getHeaderToken(),
     );
     if (kDebugMode) {
@@ -275,5 +278,51 @@ class LoggingInterceptors extends Interceptor {
     debugPrint("Response: ${response.data}");
     debugPrint("END HTTP");
     return super.onResponse(response, handler);
+  }
+}
+
+class MultipartParser {
+  /// Convert Map<String,dynamic> → FormData
+  static Future<FormData> parse(Map<String, dynamic> body) async {
+    final formData = FormData();
+
+    for (final entry in body.entries) {
+      final key = entry.key;
+      final value = entry.value;
+
+      /// ===== MULTIPLE FILES =====
+      if (value is List<String>) {
+        for (final path in value) {
+          if (path.isNotEmpty) {
+            formData.files.add(
+              MapEntry(key, await MultipartFile.fromFile(path)),
+            );
+          }
+        }
+      }
+      /// ===== SINGLE FILE =====
+      else if (value is String && _isFile(value)) {
+        formData.files.add(MapEntry(key, await MultipartFile.fromFile(value)));
+      }
+      /// ===== PRIMITIVE VALUES =====
+      else if (value is String || value is num || value is bool) {
+        formData.fields.add(MapEntry(key, value.toString()));
+      }
+      /// ===== OBJECT / MAP / LIST → JSON STRING =====
+      else {
+        formData.fields.add(MapEntry(key, jsonEncode(value)));
+      }
+    }
+
+    return formData;
+  }
+
+  /// File detection
+  static bool _isFile(String value) {
+    return value.contains("/") &&
+        (value.endsWith(".jpg") ||
+            value.endsWith(".jpeg") ||
+            value.endsWith(".png") ||
+            value.endsWith(".pdf"));
   }
 }

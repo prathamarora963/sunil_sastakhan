@@ -1,4 +1,5 @@
 
+import 'package:SastaKhana/controller/signup_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,9 +7,9 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../admin/AdminSignUp.dart';
-import '../merchent/MerchentSignup.dart';
-import '../user/UserSignUp.dart';
+import '../modules/admin/AdminSignUp.dart';
+import '../modules/merchent/MerchentSignup.dart';
+import '../modules/user/UserSignUp.dart';
 import '../utils/color.dart';
 import '../utils/colornotifire.dart';
 
@@ -105,15 +106,18 @@ class _SignupWelcomeState extends State<SignupWelcome> {
                           SizedBox(height: 20.sp),
                           /// BUTTONS
                           _buildButton("CUSTOMER", () {
-                            UserSignUp().launch(context, isNewTask: false, pageRouteAnimation: PageRouteAnimation.Scale);
+                            Get.to(() => UserSignUp(), binding: SignupBinding());
+                            // UserSignUp().launch(context, isNewTask: false, pageRouteAnimation: PageRouteAnimation.Scale);
                           }),
                            SizedBox(height: 18.sp),
                           _buildButton("MERCHANT", () {
-                            MerchentSignup().launch(context, isNewTask: false, pageRouteAnimation: PageRouteAnimation.Scale);
+                            Get.to(() => MerchentSignup(), binding: SignupBinding());
+                            // MerchentSignup().launch(context, isNewTask: false, pageRouteAnimation: PageRouteAnimation.Scale);
                           }),
                            SizedBox(height: 18.sp),
                           _buildButton("ADMIN", () {
-                            AdminSignUp().launch(context, isNewTask: false, pageRouteAnimation: PageRouteAnimation.Scale);
+                            Get.to(() => AdminSignUp(), binding: SignupBinding());
+                            // AdminSignUp().launch(context, isNewTask: false, pageRouteAnimation: PageRouteAnimation.Scale);
                           }),
                         ],
                       ),

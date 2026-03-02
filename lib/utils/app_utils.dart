@@ -1,3 +1,4 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -13,6 +14,39 @@ class Utils {
       r'(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])';
   static bool isSnackBarShowing = false;
   static bool isSnackBarErrorShowing = false;
+  static late String deviceID ;
+  static late String deviceType ;
+
+ static Future<void> initDeviceInfo() async {
+    try {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      if (GetPlatform.isAndroid) {
+        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+        deviceID = androidInfo.id; // Unique device ID
+        deviceType = "Android"; // Device type
+        
+        if (kDebugMode) {
+          print("Device ID: $deviceID");
+          print("Device Type: $deviceType");
+        }
+      } else if (GetPlatform.isIOS) {
+        IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+        deviceID = iosInfo.identifierForVendor ?? "unknown_ios";
+        deviceType = "iOS";
+        
+        if (kDebugMode) {
+          print("Device ID: $deviceID");
+          print("Device Type: $deviceType");
+        }
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error fetching device info: $e");
+      }
+    }
+  }
+
+
   static bool emailValidation(String email) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';

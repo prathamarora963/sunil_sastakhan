@@ -1,14 +1,21 @@
-import 'package:SastaKhana/data/network/api_provider.dart';
+import 'package:SastaKhana/modules/admin/AdminBottombar.dart';
+import 'package:SastaKhana/data/network/api_provider/auth_api_provider.dart';
+import 'package:SastaKhana/modules/admin/AdminHome.dart';
+import 'package:SastaKhana/modules/merchent/MarchentHome.dart';
+import 'package:SastaKhana/modules/user/UserHome.dart';
 import 'package:SastaKhana/utils/app_string.dart';
 import 'package:SastaKhana/utils/app_utils.dart';
 import 'package:SastaKhana/utils/db_helper.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   Future<void> signIn() async {
+    //  Get.offAll(() => AdminBottombar()); //UserBottombar() MerchentBottombar() AdminBottombar() --- IGNORE ---
+    //  return;
     if (emailController.text.trim().isEmpty) {
       Utils.showErrorDialog(AppString.pleaseEnterYourEmail);
       return;
@@ -32,9 +39,10 @@ class LoginController extends GetxController {
       "deviceType": GetPlatform.isIOS ? 1 : 2,
     };
 
-    var response = await ApiProvider().loginApi(data);
-    Utils.hideLoading();
+try{
+    var response = await AuthApiProvider().loginApi(data);
     if (response.success == true) {
+        Utils.sucessSnackBar(response.message ?? "");
       if (response.body != null) {
         DbHelper().saveUserModel(response.body);
         DbHelper().saveUserToken(response.body?.token);
@@ -52,10 +60,18 @@ class LoginController extends GetxController {
           // Utils.hideKeyboard(Get.context!);
         }
         DbHelper().saveIsLoggedIn(true);
-        // Get.offAllNamed(AppRoutes.dashBoardView);
+         Get.offAll(() => UserHome());
       }
     } else {
       Utils.showErrorDialog(response.message ?? "");
+    }
+  }on Exception catch (e) {
+      Utils.showErrorDialog(e.toString());
+      if (kDebugMode) {
+        print("Signup Error: $e");
+      }
+    } finally {
+      Utils.hideLoading();
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:SastaKhana/spleshscreen.dart';
+import 'package:SastaKhana/utils/app_utils.dart';
 import 'package:SastaKhana/utils/colornotifire.dart';
 import 'package:SastaKhana/utils/constant.dart';
 import 'package:SastaKhana/utils/material_you_model.dart';
@@ -25,6 +26,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await initialize();
+  Utils.initDeviceInfo().ignore();
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

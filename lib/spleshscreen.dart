@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:SastaKhana/modules/admin/AdminBottombar.dart';
+import 'package:SastaKhana/modules/user/UserBottombar.dart';
 import 'package:SastaKhana/utils/color.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +25,7 @@ class _SpleshscreenState extends State<Spleshscreen> {
 
   late StreamSubscription<Position> positionStream;
   openPage() async {
-    Login().launch(context, isNewTask: true, pageRouteAnimation: PageRouteAnimation.Fade);
+    AdminBottombar().launch(context, isNewTask: true, pageRouteAnimation: PageRouteAnimation.Fade);
   }
   @override
   void initState() {

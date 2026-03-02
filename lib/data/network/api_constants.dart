@@ -1,6 +1,8 @@
 class ApiConstants {
   static const String _baseUrl =
-      "https://conceptitsolutions.com/projects/sastakhana/";
+      "https://conceptitsolutions.com/projects/sastakhana";
+      static const String baseImageUrl =
+      "https://conceptitsolutions.com/projects/sastakhana/upload/img/";
 
   /// -------------------------- auth api ---------------------
   static const String login = "$_baseUrl/api/Auth/login";
@@ -51,7 +53,7 @@ class ApiConstants {
   static const String getMerchantOrder =
       "$_baseUrl/api/Auth/get_merchant_order";
   static const String merchantRegistration =
-      "$_baseUrl/api/Auth/merchant_registration";
+      "$_baseUrl/api/MerchantAuth/merchant_registration";
   static const String todaySale = "$_baseUrl/api/Auth/today_sale";
   static const String addCampaign = "$_baseUrl/api/Auth/add_campaign";
   static const String editCampaign = "$_baseUrl/api/Auth/edit_campaign";
@@ -82,4 +84,5 @@ class ApiConstants {
   static const String merchantDetailAdmin = "$_baseUrl/api/AdminAuth/merchent_details";
   static const String trackOrder = "$_baseUrl/api/AdminAuth/track_order";
   static const String adminOrderDetail = "$_baseUrl/api/AdminAuth/order_details";
+  static const String revenue = "$_baseUrl/api/AdminAuth/analytics";
 }
